@@ -42,10 +42,6 @@ window.addEventListener("load", (event) => {
             lstname.forEach(element => {
                 html += element + " - ";
             })
-            localStorage.clear();
-            localStorage.setItem("allCountry", JSON.stringify(resultat));
-            localStorage.setItem("date", Date.now());
-            document.querySelector("body").innerHTML = html;
         }
         )
         .catch(error => alert(error))
