@@ -1,3 +1,6 @@
+lstname = [];
+html = "";
+
 console.log("Local Storage");
 
 let allCountry = JSON.parse(localStorage.getItem("allCountry"));
