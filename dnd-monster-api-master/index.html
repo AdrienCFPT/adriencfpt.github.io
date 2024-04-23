@@ -20,25 +20,28 @@
             if (method === 'GET') {
                 fetch(url)
                     .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        } else {
+                        if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
                         }
+                        const contentType = response.headers.get('content-type');
+                        if (!contentType || !contentType.includes('application/json')) {
+                            throw new TypeError('Oops, response is not JSON');
+                        }
+                        return response.json();
                     })
                     .then(data => {
-                        handleResponse(HTTP_OK, data);
+                        handleResponse(200, data);
                     })
                     .catch(error => {
-                        handleResponse(HTTP_METHOD_NOT_ALLOWED, { error: error.message });
+                        handleResponse(405, { error: error.message });
                     });
             } else {
-                handleResponse(HTTP_METHOD_NOT_ALLOWED, { error: `Method '${method}' is not supported` });
+                handleResponse(405, { error: `Method '${method}' is not supported` });
             }
         });
 
         function handleResponse(code, data) {
-            if (code === HTTP_OK) {
+            if (code === 200) {
                 console.log('Response data:', data);
                 // Faites quelque chose avec les données reçues
             } else {
@@ -46,7 +49,6 @@
                 // Gérez l'erreur
             }
         }
-
     </script>
 </body>
 
